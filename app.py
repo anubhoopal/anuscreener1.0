@@ -124,6 +124,7 @@ def register():
 @app.route('/screener', methods=['GET', 'POST'])
 @login_required
 def screener():
+    filtered_data = []
     try:
         for symbol in symbols:
             sf=dg.data_rec(symbol=symbol, period='60d', interval='15m')
@@ -134,7 +135,7 @@ def screener():
                 filtered_data.extend(data)
     except:
         pass
-    save_list_to_csv(filtered_data, 'filtered_data.csv')
+    #save_list_to_csv(filtered_data, 'filtered_data.csv')
     return render_template('screener.html', data=sorted(filtered_data, key=lambda x: x[1], reverse=True))
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -177,9 +178,6 @@ def payment_success(id):
         usr.expiry_date = datetime.now()+timedelta(days=30)
         db.session.commit()
         return "Payment Success"
-        # Payment signature is valid, handle the success logic here
-        # For example, update the payment status in your database
-        # and render a success page
     except razorpay.errors.BadRequestError as e:
         # Payment verification failed
         return "Payment verification failed."
@@ -187,22 +185,6 @@ def payment_success(id):
 @app.route('/success')
 def success():
     return render_template('success.html')
-
-##@app.route('/update', methods=['POST'])
-##def update():
-##    if current_user.is_authenticated: # check if the user is logged in
-##        new_username = request.form.get('new_username')
-##        new_email = request.form.get('new_email')
-##        user = User.query.get(current_user.get_id()) # get the user object by ID
-##        if user:
-##            user.username = new_username # update the username
-##            user.email = new_email # update the email
-##            db.session.commit() # commit the changes to the database
-##            return 'User data updated'
-##        else:
-##            return 'User not found'
-##    else:
-##        return 'You need to log in first'
 
 
 if __name__ == '__main__':
