@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Payment</title>
+</head>
+<body>
+	<h1>Payment</h1>
+<button id="rzp-button1">Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{payment['key']}}", // Enter the Key ID generated from the Dashboard
+    "amount": "{{payment['amount']}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "AnuSmartTraders", //your business name
+    "description": "Subscription",
+    "image": "",
+    "order_id": "{{payment['id']}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "{{url_for('payment_success', id=id)}}",
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "annapurna", //your customer's name
+        "email": "anu@example.com",
+        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Anu AnuSmartTraders Corporate Office, Visakhapatnam"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+<div>
+    {% if current_user.is_authenticated %}
+  Hi {{ current_user.name }}!
+    {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+  	<h1>AnuSmartTraders</h1>
+    <img src="http://dolct.org/images/rupee_.png" width="50" height="50" class="center">
+    <h1>Login</h1>
+    <form method="POST" class="center">
+      {{ form.csrf_token }}
+      {{ form.username.label }} {{ form.username }}
+      {{ form.email.label }} {{ form.email }}
+      {{ form.password.label }} {{ form.password }}
+      {{ form.submit }}
+    </form>
+  </body>
+</html>

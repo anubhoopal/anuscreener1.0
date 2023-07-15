@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<title>Screener</title>
+</head>
+<body>
+	<h1>AnuSmartTraders</h1>
+	<img src="http://dolct.org/images/rupee_.png" width="50" height="50" class="center">
+	<h2>Welcome to Indias no.1 trending trading tool</h2>
+	<a href="{{url_for('logout')}}">Press Here for LogOut</a>
+	<header>
+      <h1>StockAnalysis</h1>
+      <table border='2'>
+            <tr>
+                <th rowspan="2">Symbol</th>
+                <th rowspan="2">Date</th>
+                <th rowspan="2">Action</th>
+                <th colspan="2">Buy/Sell Between</th>
+                <th rowspan="2">Target1</th>
+                <th rowspan="2">Target2</th>
+                <th rowspan="2">Stoploss</th>
+            </tr>
+            <tr>
+                <th>Range1</th>
+                <th>Range2</th>
+            </tr>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>{{ row[7] }}</td>
+            </tr>
+            {% endfor %}
+      </table>
+    </header>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<title>Subscription</title>
+</head>
+<body>
+	<h1>AnuSmartTraders</h1>
+	<img src="http://dolct.org/images/rupee_.png" width="50" height="50" class="center">
+	<h1>Subscription Page</h1>
+	<form method="POST" action="" class="center">
+		<div>Your Subscription is under progress.</div>
+		{% if user.subscription %}
+      <p>Subscription Plan: {{ user.suscription_date }}</p>
+      <p>Expiration Date: {{ user.expiry_date }}</p>
+    {% else %}
+      <p>You do not have an active subscription.</p>
+    {% endif %}	
+	</form>
+	<button id="rzp-button1">Pay with Razorpay</button>
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+	<script>
+	var options = {
+    "key": "rzp_test_2HpbR9UNCKlbAY", // Enter the Key ID generated from the Dashboard
+    "amount":3000,
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "{{ url_for('paymentsuccess')}}",
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+</body>
+</html>
