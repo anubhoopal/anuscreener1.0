@@ -63,7 +63,7 @@ class IndicatorsApply():
         RSI = RSIIndicator(df.Close, 9)
         MFI = MFIIndicator(df.High, df.Low, df.Close, df.Volume, 14)
         df['rsi'] = RSI.rsi()
-        df['macd'], df['signal'], df['hist'] = tb.MACD(df.Close, 8, 21, 5)
+        #df['macd'], df['signal'], df['hist'] = tb.MACD(df.Close, 8, 21, 5)
         df['sma20'] = df.Close.rolling(20).mean()
         df['high_higher'] = df.High.rolling(5).max()
         df['low_lower'] = df.Low.rolling(5).min()
