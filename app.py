@@ -125,17 +125,15 @@ def register():
 @login_required
 def screener():
     filtered_data = []
-    try:
-        for symbol in symbols:
-            sf=dg.data_rec(symbol=symbol, period='60d', interval='15m')
-            data_15 = ia.indicators(sf)
-            #data_30 = ia.indicators(df)
-            data = ca.conditions(symbol, data_15)
-            if data is not None:
-                filtered_data.extend(data)
-    except:
-        pass
-    #save_list_to_csv(filtered_data, 'filtered_data.csv')
+    #try:
+    for symbol in symbols:
+        sf=dg.data_rec(symbol=symbol, period='60d', interval='15m')
+        data_15 = ia.indicators(sf)
+        data = ca.conditions(symbol, data_15)
+        if data is not None:
+            filtered_data.extend(data)
+    #except:
+        #pass
     return render_template('screener.html', data=sorted(filtered_data, key=lambda x: x[1], reverse=True))
 
 @app.route('/logout', methods=['GET', 'POST'])
