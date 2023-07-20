@@ -125,13 +125,25 @@ def register():
 def screener():
     filtered_data = []
     try:
-        for symbol in symbols[:4]:
+        for symbol in symbols[:3]:
             sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
             data_15 = ia.indicators(sf)
             data = ca.conditions(symbol, data_15)
             if data is not None:
                 filtered_data.extend(data)
-        for symbol in symbols[5:8]:
+        for symbol in symbols[3:6]:
+            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
+            data_15 = ia.indicators(sf)
+            data = ca.conditions(symbol, data_15)
+            if data is not None:
+                filtered_data.extend(data)
+        for symbol in symbols[6:9]:
+            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
+            data_15 = ia.indicators(sf)
+            data = ca.conditions(symbol, data_15)
+            if data is not None:
+                filtered_data.extend(data)
+        for symbol in symbols[9:12]:
             sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
             data_15 = ia.indicators(sf)
             data = ca.conditions(symbol, data_15)
