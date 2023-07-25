@@ -1,7 +1,6 @@
 
 from datagain import DataGain as dg
 from indicators import IndicatorsApply as ia
-#from data30 import DataConvert as dc
 
 class ConditionsApply():
     def __init__(self):
@@ -10,8 +9,6 @@ class ConditionsApply():
         filtered_data = []
         sell_date = []
         buy_date = []
-        #df = dc.data_rec(sf)
-        #df = ia.indicators(df)
         for i in range(400, len(sf)):
             if sf['Close'][i]<sf['ema200'][i] and sf['Close'][i] < sf['Close'][i-1] and sf['High'][i-1] >= sf['high_higher'][i-10:i-1].max() and sf['rsi'][i-1]<sf['rsi_max'][i-10:i-1].max() and sf['rsi_max'][i-1].max() >=70 and (sf['high_higher'].iloc[i]-sf['Close'].iloc[i])/sf['high_higher'].iloc[i] < 0.006 and sf['mfi_max'].iloc[i]>80:
                 df=dg.data_rec(symbol=symbol, period='25d', interval='30m')
