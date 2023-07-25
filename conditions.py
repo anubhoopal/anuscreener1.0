@@ -1,7 +1,7 @@
 
 from datagain import DataGain as dg
 from indicators import IndicatorsApply as ia
-from data30 import DataConvert as dc
+#from data30 import DataConvert as dc
 
 class ConditionsApply():
     def __init__(self):
