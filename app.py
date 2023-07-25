@@ -16,6 +16,7 @@ from datagain import DataGain as dg
 from indicators import IndicatorsApply as ia
 from conditions import ConditionsApply as ca
 import csv
+from concurrent.futures import ThreadPoolExecutor
 
 db=SQLAlchemy()
 app = Flask(__name__)
