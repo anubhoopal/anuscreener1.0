@@ -16,7 +16,7 @@ from datagain import DataGain as dg
 from indicators import IndicatorsApply as ia
 from conditions import ConditionsApply as ca
 import csv
-from concurrent.futures import ThreadPoolExecutor
+#from concurrent.futures import ThreadPoolExecutor
 
 db=SQLAlchemy()
 app = Flask(__name__)
@@ -134,21 +134,21 @@ def register():
 @login_required
 def screener():
     filtered_data = []
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        futures = [executor.submit(final_func, symbol) for symbol in symbols[:10]]
-        for future in futures:
-            filtered_symbol_data = future.result()
-            if filtered_symbol_data is not None:
-                filtered_data.extend(filtered_symbol_data)
-    #try:
-        #for symbol in symbols[:3]:
-            #sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
-            #data_15 = ia.indicators(sf)
-            #data = ca.conditions(symbol, data_15)
-            #if data is not None:
-                #filtered_data.extend(data)
-    #except:
-        #pass
+    #with ThreadPoolExecutor(max_workers=1) as executor:
+        #futures = [executor.submit(final_func, symbol) for symbol in symbols[:10]]
+        #for future in futures:
+            #filtered_symbol_data = future.result()
+            #if filtered_symbol_data is not None:
+                #filtered_data.extend(filtered_symbol_data)
+    try:
+        for symbol in symbols[:3]:
+            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
+            data_15 = ia.indicators(sf)
+            data = ca.conditions(symbol, data_15)
+            if data is not None:
+                filtered_data.extend(data)
+    except:
+        pass
     return render_template('screener.html', data=sorted(filtered_data, key=lambda x: x[1], reverse=True))
 
 @app.route('/logout', methods=['GET', 'POST'])
