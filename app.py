@@ -87,6 +87,15 @@ def save_list_to_csv(data_list, filename):
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(data_list)
+        
+def final_func(symbol):
+    try:
+        sf=dg.data_rec(symbol, period='60d', interval='15m')
+        data_15 = ia.indicators(sf)
+        data = ca.conditions(symbol, data_15)
+        return data
+    except Exception as e:
+        return None
 
 @app.route('/')
 def index():
@@ -124,33 +133,21 @@ def register():
 @login_required
 def screener():
     filtered_data = []
-    try:
-        for symbol in symbols[:3]:
-            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
-            data_15 = ia.indicators(sf)
-            data = ca.conditions(symbol, data_15)
-            if data is not None:
-                filtered_data.extend(data)
-        for symbol in symbols[3:6]:
-            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
-            data_15 = ia.indicators(sf)
-            data = ca.conditions(symbol, data_15)
-            if data is not None:
-                filtered_data.extend(data)
-        for symbol in symbols[6:9]:
-            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
-            data_15 = ia.indicators(sf)
-            data = ca.conditions(symbol, data_15)
-            if data is not None:
-                filtered_data.extend(data)
-        for symbol in symbols[9:12]:
-            sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
-            data_15 = ia.indicators(sf)
-            data = ca.conditions(symbol, data_15)
-            if data is not None:
-                filtered_data.extend(data)
-    except:
-        pass
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        futures = [executor.submit(final_func, symbol) for symbol in symbols[:10]]
+        for future in futures:
+            filtered_symbol_data = future.result()
+            if filtered_symbol_data is not None:
+                filtered_data.extend(filtered_symbol_data)
+    #try:
+        #for symbol in symbols[:3]:
+            #sf=dg.data_rec(symbol=symbol, period='25d', interval='15m')
+            #data_15 = ia.indicators(sf)
+            #data = ca.conditions(symbol, data_15)
+            #if data is not None:
+                #filtered_data.extend(data)
+    #except:
+        #pass
     return render_template('screener.html', data=sorted(filtered_data, key=lambda x: x[1], reverse=True))
 
 @app.route('/logout', methods=['GET', 'POST'])
